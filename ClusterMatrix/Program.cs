@@ -12,56 +12,55 @@ namespace ClusterMatrix
         private const int MatricesCount = 5513;
         private const int MaxExclusive = 13;
 
-        /*---------------Debut Mode--------------*/
-        private static readonly bool  IsTest = false;
-        //Test params
-        private const int MatricesTestCount = 3;
-        private const int MatricesSize = 80;
-        private const bool PrintTestMatrices = true;
-
-        private const bool EnableChecks = true;
-
         /*---------------Debug Mode--------------*/
+        //private static readonly bool IsTest = false;
+        //private const int MatricesTestCount = 3;
+        //private const int MatricesSize = 65;
+        //private const bool PrintTestMatrices = true;
+        //private const bool EnableChecks = true;
+        /*---------------Debug Mode--------------*/
+
+
         static int Main(string[] args)
         {
             int matrixCount;
             int mSize;
 
-            if (IsTest)
+            //if (IsTest)
+            //{
+            //    matrixCount = MatricesTestCount;
+            //    mSize = MatricesSize;
+
+            //    if (PrintTestMatrices)
+            //        Console.WriteLine($"===  Test mode active MCount={matrixCount} and MSize={mSize}");
+
+            //}
+            //else
+            //{
+            matrixCount = MatricesCount;
+
+            if (args.Length < 1 || !int.TryParse(args[0], out mSize) || mSize <= 0)
             {
-                matrixCount = MatricesTestCount;
-                mSize = MatricesSize;
-
-                if (PrintTestMatrices)
-                    Console.WriteLine($"===  Test mode active MCount={matrixCount} and MSize={mSize}");
-
+                string got = args.Length < 1 ? "(nothing)" : $" \"{args[0]}\" ";
+                Console.WriteLine($"Invalid matrix size. I expected a positive whole number, but got {got}.");
+                Console.WriteLine("Example: ClusterMatrix 20");
+                return 1;
             }
-            else
-            {
-                matrixCount = MatricesCount;
 
-                if (args.Length < 1 || !int.TryParse(args[0], out mSize) || mSize <= 0)
-                {
-                    string got = args.Length < 1 ? "(nothing)" : $" \"{args[0]}\" ";
-                    Console.WriteLine($"Invalid matrix size. I expected a positive whole number, but got {got}.");
-                    Console.WriteLine("Example: ClusterMatrix 20");
-                    return 1;
-                }
-
-            }
+            //}
 
             Random randomNumber = new();
 
-            long totalAcceptedClusters = 0;
-            long totalAcceptedClusterCells = 0;
+            long totalAcceptedClustersCount = 0;
+            long totalAcceptedClusterCellsCount = 0;
 
             long[] digitOccurringFreq = new long[MaxExclusive];
 
             int[,] grid = new int[mSize, mSize];
             bool[,] visited = new bool[mSize, mSize];
 
-            int[] rowDirections = [ -1, 1, 0, 0 ];
-            int[] columnDirections = [ 0, 0, -1, 1 ];
+            int[] rowDirections = new[] { -1, 1, 0, 0 };
+            int[] columnDirections = new[] { 0, 0, -1, 1 };
 
             int estimatedQueueCapacity = Math.Max(16, ((mSize * mSize) / 4));
             Queue<(int r, int c)> queue = new Queue<(int r, int c)>(estimatedQueueCapacity);
@@ -74,7 +73,6 @@ namespace ClusterMatrix
                 {
                     for (int c = 0; c < mSize; c++)
                     {
-
                         int num = randomNumber.Next(MaxExclusive);
                         grid[r, c] = num;
                         digitOccurringFreq[num]++;
@@ -82,11 +80,10 @@ namespace ClusterMatrix
                     }
                 }
 
-                if (IsTest && PrintTestMatrices)
-                {
-                    Console.WriteLine($"\n===== Matrix {i + 1}/{matrixCount} (N={mSize}) =====\n");
-                    //PrintMatrix(grid, mSize);
-                }
+                //if (IsTest && PrintTestMatrices)
+                //{
+                //    Console.WriteLine($"\n===== Matrix {i + 1}/{matrixCount} (N={mSize}) =====\n");
+                //}
 
                 for (int r = 0; r < mSize; r++)
                 {
@@ -100,13 +97,12 @@ namespace ClusterMatrix
 
 
                         /*=== Added for testing ===*/
-                        int startRow = r;
-                        int startCol = c;
-
-                        int minRow = r;
-                        int maxRow = r;
-                        int minCol = c;
-                        int maxCol = c;
+                        //int startRow = r;
+                        //int startCol = c;
+                        //int minRow = r;
+                        //int maxRow = r;
+                        //int minCol = c;
+                        //int maxCol = c;
                         /*=== Added for testing ===*/
 
 
@@ -120,10 +116,10 @@ namespace ClusterMatrix
                             size++;
 
                             /*=== Added for testing ===*/
-                            if (curRow < minRow) minRow = curRow;
-                            if (curRow > maxRow) maxRow = curRow;
-                            if (curCol < minCol) minCol = curCol;
-                            if (curCol > maxCol) maxCol = curCol;
+                            //if (curRow < minRow) minRow = curRow;
+                            //if (curRow > maxRow) maxRow = curRow;
+                            //if (curCol < minCol) minCol = curCol;
+                            //if (curCol > maxCol) maxCol = curCol;
                             /*=== Added for testing ===*/
 
 
@@ -148,35 +144,35 @@ namespace ClusterMatrix
 
                         if (size > 5)
                         {
-                            totalAcceptedClusters++;
-                            totalAcceptedClusterCells += size;
+                            totalAcceptedClustersCount++;
+                            totalAcceptedClusterCellsCount += size;
 
-                            if (IsTest && PrintTestMatrices)
-                            {
-                                Console.WriteLine(
-                                                   $"Qualifying cluster -> Value={value}, Size={size}, " +
-                                                   $"Start=({startRow},{startCol}), " +
-                                                   $"Bounds=[({minRow},{minCol}) -> ({maxRow},{maxCol})]");
+                            //if (IsTest && PrintTestMatrices)
+                            //{
+                            //    Console.WriteLine(
+                            //                       $"Qualifying cluster -> Value={value}, Size={size}, " +
+                            //                       $"Start=({startRow},{startCol}), " +
+                            //                       $"Bounds=[({minRow},{minCol}) -> ({maxRow},{maxCol})]");
 
-                                PrintMatrix(grid, mSize,
-                                            startRow, startCol,
-                                            minRow, minCol,
-                                            maxRow, maxCol);
-                            }
+                            //    PrintMatrix(grid, mSize,
+                            //                startRow, startCol,
+                            //                minRow, minCol,
+                            //                maxRow, maxCol);
+                            //}
                         }
                     }
                 }
             }
 
-            double avgClustersPerMatrix = totalAcceptedClusters / (double)matrixCount;
+            double avgClustersPerMatrix = totalAcceptedClustersCount / (double)matrixCount;
             double avgClusterSize;
-            if (totalAcceptedClusters == 0)
+            if (totalAcceptedClustersCount == 0)
             {
                 avgClusterSize = 0.0;
             }
             else
             {
-                avgClusterSize = totalAcceptedClusterCells / (double)totalAcceptedClusters;
+                avgClusterSize = totalAcceptedClusterCellsCount / (double)totalAcceptedClustersCount;
             }
 
             long maxFreq = 0;
@@ -186,7 +182,7 @@ namespace ClusterMatrix
                     maxFreq = digitOccurringFreq[i];
             }
 
-            List<int> mostFrequentDigits = [];
+            List<int> mostFrequentDigits = new List<int>();
             for (int i = 0; i < MaxExclusive; i++)
             {
                 if (digitOccurringFreq[i] == maxFreq)
@@ -194,31 +190,33 @@ namespace ClusterMatrix
             }
 
             /*====Added for testing statistics====*/
-            long expectedTotalCells = matrixCount * (long)mSize * mSize;
-            if (EnableChecks)
-            {
-                long sumFreq = 0;
-                for (int d = 0; d < MaxExclusive; d++)
-                    sumFreq += digitOccurringFreq[d];
+            //long expectedTotalCells = matrixCount * (long)mSize * mSize;
+            //if (EnableChecks)
+            //{
+            //    long sumFreq = 0;
+            //    for (int d = 0; d < MaxExclusive; d++)
+            //        sumFreq += digitOccurringFreq[d];
 
-                if (sumFreq != expectedTotalCells)
-                {
-                    Console.WriteLine(" CHECK FAILED!");
-                    Console.WriteLine($"Sum(digitOccurringFreq) = {sumFreq} but expected {expectedTotalCells}");
-                    return 2;
-                }
-            }
+            //    if (sumFreq != expectedTotalCells)
+            //    {
+            //        Console.WriteLine(" CHECK FAILED!");
+            //        Console.WriteLine($"Sum(digitOccurringFreq) = {sumFreq} but expected {expectedTotalCells}");
+            //        return 2;
+            //    }
+            //}
+            /*====Added for testing statistics====*/
+
 
             Console.WriteLine($"\n ===Results===");
+            //Console.WriteLine($"Total cells generated = {expectedTotalCells}");
             Console.WriteLine($"N = {mSize}");
             Console.WriteLine($"Matrices = {matrixCount}");
-            Console.WriteLine($"Total cells generated = {expectedTotalCells}");
             Console.WriteLine($"");
 
 
             Console.WriteLine($"Average number of qualifying clusters per matrix: {avgClustersPerMatrix:F6}");
             Console.WriteLine($"Average qualifying cluster size: {avgClusterSize:F6}");
-            Console.WriteLine($"Total qualifying clusters found: {totalAcceptedClusters}");
+            Console.WriteLine($"Total qualifying clusters found: {totalAcceptedClustersCount}");
             Console.WriteLine($"");
 
 
@@ -231,9 +229,10 @@ namespace ClusterMatrix
 
 
             /*===Added for testing statistics===*/
-            Console.WriteLine("Digit frequencies (0..12):");
-            for (int d = 0; d < MaxExclusive; d++)
-                Console.WriteLine($"{d,2}: {digitOccurringFreq[d]}");
+            //Console.WriteLine("Digit frequencies (0..12):");
+            //for (int d = 0; d < MaxExclusive; d++)
+            //    Console.WriteLine($"{d,2}: {digitOccurringFreq[d]}");
+            /*===Added for testing statistics===*/
             return 0;
         }
 
