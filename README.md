@@ -1,4 +1,4 @@
-# Cluster-Matrix
+# Cluster Matrix
 
 Console application written in C# (.NET 8) that generates square matrices filled with random numbers and analyzes clusters of adjacent equal values.
 
@@ -16,3 +16,13 @@ The program:
     - Most frequently occurring digit(s)
 
 Matrix size is provided via a **command-line argument**.
+
+---
+
+## How to run
+
+Open a terminal in the project directory and run:
+
+```sh
+dotnet run -- 50
+```
