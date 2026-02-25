@@ -21,7 +21,7 @@ namespace ClusterMatrix
 
         private const bool EnableChecks = true;
 
-        /*---------------Debut Mode--------------*/
+        /*---------------Debug Mode--------------*/
         static int Main(string[] args)
         {
             int matrixCount;
@@ -44,7 +44,6 @@ namespace ClusterMatrix
                 {
                     string got = args.Length < 1 ? "(nothing)" : $" \"{args[0]}\" ";
                     Console.WriteLine($"Invalid matrix size. I expected a positive whole number, but got {got}.");
-                    Console.WriteLine("Usage: ClusterMatrix <N>");
                     Console.WriteLine("Example: ClusterMatrix 20");
                     return 1;
                 }
